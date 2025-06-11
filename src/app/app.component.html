@@ -6,7 +6,7 @@
         {{ title }}
     </div>
     <div class="p-toolbar-group-end">
-        <i class="pi pi-shopping-cart" style="font-size: 2rem"></i>
+        <i class="pi pi-shopping-cart" style="font-size: 2rem; cursor: pointer" (click)="openCart()"></i>
     </div>
 </p-toolbar>
 <p-splitter 
@@ -23,3 +23,15 @@
         </div>
     </ng-template>
 </p-splitter>
+<p-dialog 
+  [visible]="isCartVisible()" 
+  (visibleChange)="isCartVisible.set($event)" 
+  header="Mon panier" 
+  [style]="{ width: '40vw' }">
+    <app-cart
+    [cartItems]="cartService.cart()"
+    (increase)="increaseQuantity($event)"
+    (decrease)="decreaseQuantity($event)"
+    (remove)="removeProduct($event)"
+    />
+</p-dialog>

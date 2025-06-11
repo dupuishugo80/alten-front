@@ -1,0 +1,49 @@
+@if (cartItems.length > 0) {
+  <div>
+    @for (item of cartItems; track item.id) {
+      <div class="mb-4 p-2 border rounded flex items-center">
+        <div>
+          <div class="font-bold">{{ item.name }}</div>
+          <div>{{ item.price | number:'1.2-2' }} €</div>
+        </div>
+
+        <div class="flex items-center gap-2 ml-auto">
+          <button
+            class="bg-gray-300 rounded px-2"
+            (click)="onDecrease(item)"
+            [disabled]="item.quantity <= 1"
+            aria-label="Diminuer quantité"
+          >-</button>
+
+          <div class="bg-blue-500 text-white rounded-full px-3 py-1 text-sm font-semibold select-none">
+            {{ item.quantity }}
+          </div>
+
+          <button
+            class="bg-gray-300 rounded px-2"
+            (click)="onIncrease(item)"
+            aria-label="Augmenter quantité"
+          >+</button>
+        </div>
+
+        <button
+          class="text-red-600 ml-4"
+          (click)="onRemove(item)"
+          aria-label="Supprimer produit"
+          title="Supprimer"
+        >
+          <i class="pi pi-trash" style="font-size: 1.5rem;"></i>
+        </button>
+      </div>
+    }
+
+    <div class="border-t pt-4 mt-4">
+      <div class="flex justify-between items-center text-lg font-bold">
+        <span>Total :&nbsp;</span>
+        <span>{{ getCartTotal() | number:'1.2-2' }} €</span>
+      </div>
+    </div>
+  </div>
+} @else {
+  <p class="text-center text-gray-500">Votre panier est vide.</p>
+}

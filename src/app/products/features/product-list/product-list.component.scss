@@ -3,3 +3,25 @@
     height: 100%;
     overflow: auto;
 }
+
+::ng-deep .p-dataview .p-paginator {
+    justify-content: center !important;
+}
+
+.product-image {
+    display: block;
+    max-width: 12rem !important; 
+    width: auto !important;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-body {
+    min-height: 32vh;
+}

@@ -1,0 +1,66 @@
+<h2 class="text-2xl font-semibold mb-6">Contact</h2>
+
+<form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+
+  <div class="mb-5">
+    <label for="email" class="block text-gray-700 font-medium mb-2">Email :</label>
+    <input
+      id="email"
+      formControlName="email"
+      type="email"
+      class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      placeholder="email@example.com"
+    />
+    @if (contactForm.controls.email.touched && contactForm.controls.email.invalid) {
+      <div class="mt-1 text-sm text-red-600">
+        @if (contactForm.controls.email.errors?.['required']) {
+          <small>L'email est requis.</small>
+        }
+        @if (contactForm.controls.email.errors?.['email']) {
+          <small>Email invalide.</small>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="mb-6">
+    <label for="message" class="block text-gray-700 font-medium mb-2">
+      Message : 
+      <span class="text-sm text-gray-500">
+        ({{ contactForm.controls.message.value?.length || 0 }}/300)
+      </span>
+    </label>
+    <textarea
+      id="message"
+      formControlName="message"
+      rows="5"
+      maxlength="300"
+      class="w-full px-4 py-2 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+      placeholder="Votre message..."
+    ></textarea>
+    @if (contactForm.controls.message.touched && contactForm.controls.message.invalid) {
+      <div class="mt-1 text-sm text-red-600">
+        @if (contactForm.controls.message.errors?.['required']) {
+          <small>Le message est requis.</small>
+        }
+        @if (contactForm.controls.message.errors?.['maxlength']) {
+          <small>Le message ne peut pas dépasser 300 caractères.</small>
+        }
+      </div>
+    }
+  </div>
+
+  <button
+    type="submit"
+    [disabled]="contactForm.invalid"
+    class="w-full bg-blue-600 text-white font-semibold py-3 rounded-md hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+  >
+    Envoyer
+  </button>
+</form>
+
+@if (messageEnvoye) {
+  <div class="max-w-lg mx-auto mt-4 p-4 bg-green-100 text-green-700 rounded-md font-medium shadow">
+    Demande de contact envoyée avec succès.
+  </div>
+}

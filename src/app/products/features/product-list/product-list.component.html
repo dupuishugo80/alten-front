@@ -1,22 +1,57 @@
-<h1 class="text-center">Liste des produits</h1>
+<h1 class="text-center text-2xl font-bold my-4">Liste des produits</h1>
 
-<p-button label="Créer produit" (onClick)="onCreate()" class="block text-center"/>
+<p-button label="Créer produit" (onClick)="onCreate()" class="block text-center" />
 
-<p-dataView #dv [value]="products()">
-    <ng-template pTemplate="list" let-products>
-        @for (product of products; track product) {
-            <p-card class="block mb-2">
-                <span class="font-medium text-secondary text-sm">{{ product.category }}</span>
-                <div class="text-lg font-medium text-900 mt-2">{{ product.name }}</div>
+<p-dataView #dv 
+    [value]="products()" 
+    layout="grid" 
+    [paginator]="true"
+    [rows]="12"
+    [totalRecords]="products().length"
+    [rowsPerPageOptions]="[12, 24, 36]">
+    
+    <ng-template pTemplate="grid" let-products>
+        <div class="grid grid-nogutter">
+            @for (product of products; track product) {
+                <div class="col-12 sm:col-6 md:col-4 lg:col-3 p-2">
+                    <p-card class="h-full shadow-md rounded-xl">
+                        <ng-template pTemplate="header">
+                            <img [src]="product.image" alt="{{ product.name }}"
+                                     class="mx-auto h-48 object-cover rounded-t-xl product-image">
+                        </ng-template>
 
-                <ng-template pTemplate="footer">
-                    <div class="flex gap-3 mt-1">
-                        <p-button label="Modifier" severity="secondary" (onClick)="onUpdate(product)"/>
-                        <p-button label="Supprimer" severity="danger" (onClick)="onDelete(product)" />
-                    </div>
-                </ng-template>
-            </p-card>
-        }
+                        <div class="p-3 space-y-2 product-body"> 
+                            <span class="text-sm text-primary font-semibold">{{ product.category }}</span>
+                            <div class="text-lg font-bold text-gray-900">{{ product.name }}</div>
+                            <div class="text-sm text-gray-600 line-clamp-3">{{ product.description }}</div>
+
+                            <div class="flex items-center justify-between mt-2 mb-2">
+                                <div class="text-xl font-extrabold text-green-600">{{ product.price | number:'1.2-2' }} €</div>
+                            </div>
+
+                            @if (product.inventoryStatus == "OUTOFSTOCK") {
+                                <div class="text-red-600 font-semibold mb-2 text-center">
+                                    Produit en rupture de stock
+                                </div>
+                            }
+
+                            <p-button
+                                label="Ajouter au panier"
+                                icon="pi pi-shopping-cart"
+                                (onClick)="addToCart(product)"
+                                [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"
+                                class="w-full"
+                            />
+
+                            <div class="flex gap-2 mt-3">
+                                <p-button label="Modifier" severity="secondary" (onClick)="onUpdate(product)" class="w-1/2" />
+                                <p-button label="Supprimer" severity="danger" (onClick)="onDelete(product)" class="w-1/2" />
+                            </div>
+                        </div>
+                    </p-card>
+                </div>
+            }
+        </div>
     </ng-template>
 </p-dataView>
 
